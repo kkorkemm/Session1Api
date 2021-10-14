@@ -35,5 +35,20 @@ namespace Session1Api.Controllers
 
             return Ok(departmentLocations);
         }
+
+        // POST: api/Assets
+        [ResponseType(typeof(DepartmentLocations))]
+        public IHttpActionResult PostAssets(DepartmentLocations departmentLocations)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.DepartmentLocations.Add(departmentLocations);
+            db.SaveChanges();
+
+            return CreatedAtRoute("DefaultApi", new { id = departmentLocations.ID }, departmentLocations);
+        }
     }
 }

@@ -209,6 +209,7 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AssetGroupsController.cs" />
+    <Compile Include="Controllers\AssetPhotosController.cs" />
     <Compile Include="Controllers\AssetsController.cs" />
     <Compile Include="Controllers\AssetTransferLogsController.cs" />
     <Compile Include="Controllers\DepartmentLocationsController.cs" />
