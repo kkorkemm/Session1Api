@@ -19,10 +19,10 @@ namespace Session1Api.Controllers
         private KazanNeftSession1DBEntities db = new KazanNeftSession1DBEntities();
 
         // GET: api/AssetTransferLogs
-        [ResponseType(typeof(AssetTransferLogs))]
+        [ResponseType(typeof(List<AssetTransferLogs>))]
         public IHttpActionResult GetAssetTransferLogs()
         {
-            return Ok(db.AssetTransferLogs.ToList().ConvertAll(p => new HistoryModel(p)));
+            return Ok(db.AssetTransferLogs.ToList().ConvertAll(p => new AssetDepartmentModels(p)));
         }
 
         // GET: api/AssetTransferLogs/5
@@ -35,7 +35,87 @@ namespace Session1Api.Controllers
                 return NotFound();
             }
 
-            return Ok(new HistoryModel(assetTransferLogs));
+            return Ok(new AssetDepartmentModels(assetTransferLogs));
+        }
+
+        // PUT: api/AssetTransferLogs/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutAssetTransferLogs(long id, AssetTransferLogs assetTransferLogs)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != assetTransferLogs.ID)
+            {
+                return BadRequest();
+            }
+
+            db.Entry(assetTransferLogs).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AssetTransferLogsExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // POST: api/AssetTransferLogs
+        [ResponseType(typeof(AssetTransferLogs))]
+        public IHttpActionResult PostAssetTransferLogs(AssetTransferLogs assetTransferLogs)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            db.AssetTransferLogs.Add(assetTransferLogs);
+            db.SaveChanges();
+
+            return CreatedAtRoute("DefaultApi", new { id = assetTransferLogs.ID }, assetTransferLogs);
+        }
+
+        // DELETE: api/AssetTransferLogs/5
+        [ResponseType(typeof(AssetTransferLogs))]
+        public IHttpActionResult DeleteAssetTransferLogs(long id)
+        {
+            AssetTransferLogs assetTransferLogs = db.AssetTransferLogs.Find(id);
+            if (assetTransferLogs == null)
+            {
+                return NotFound();
+            }
+
+            db.AssetTransferLogs.Remove(assetTransferLogs);
+            db.SaveChanges();
+
+            return Ok(assetTransferLogs);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private bool AssetTransferLogsExists(long id)
+        {
+            return db.AssetTransferLogs.Count(e => e.ID == id) > 0;
         }
     }
 }
