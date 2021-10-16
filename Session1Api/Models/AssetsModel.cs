@@ -20,6 +20,7 @@ namespace Session1Api.Models
             AssetGroup = asset.AssetGroups;
             Department = asset.DepartmentLocations.Departments;
             Location = asset.DepartmentLocations.Locations;
+            EmployeeID = asset.EmployeeID;
         }
 
         public long ID { get; set; }
@@ -28,7 +29,8 @@ namespace Session1Api.Models
         public string DepartmentName { get; set; }
         public string Description { get; set; }
         public DateTime WarrantyDate { get; set; }
-
+        
+        public long EmployeeID { get; set; }
 
         public AssetGroups AssetGroup { get; set; }
         public Departments Department { get; set; }
